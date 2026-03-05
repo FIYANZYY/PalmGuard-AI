@@ -1,0 +1,7 @@
+path: datasets  # Lokasi folder dataset kamu
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 4
+names: ['COKLAT PADA UJUNG DAUN', 'HIJAU KEKUNINGAN', 'HIJAU NORMAL', 'KUNING PADA DAUN TUA']

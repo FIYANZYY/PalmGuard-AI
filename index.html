@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PalmGuard AI - Sistem Pakar Sawit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        .hero-bg {
+            background: linear-gradient(rgba(6, 30, 6, 0.8), rgba(6, 30, 6, 0.8)), 
+            url('images/bg-sawit.jpeg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-emerald-950">
+
+    <nav class="bg-emerald-900 text-white p-4 sticky top-0 z-50 border-b border-emerald-800 shadow-xl">
+        <div class="max-w-7xl mx-auto flex justify-between items-center px-4">
+            <span class="font-extrabold text-2xl uppercase italic tracking-tighter">Palm<span class="text-lime-400">Guard</span></span>
+            <div class="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest items-center">
+                <a href="#home" class="hover:text-lime-400">Beranda</a>
+                <a href="#edukasi" class="hover:text-lime-400">Parameter Hara</a>
+                <a href="#analisis" class="bg-lime-500 text-emerald-900 px-6 py-2 rounded-full hover:shadow-lime-500/50 shadow-lg transition">Analisis Daun</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="hero-bg h-[80vh] flex items-center justify-center text-center px-4">
+        <div class="max-w-4xl">
+            <h1 class="text-white text-5xl md:text-8xl font-black mb-6 uppercase tracking-tighter leading-none">Cek Nutrisi <br><span class="text-lime-400">Kebun Sawit</span></h1>
+            <p class="text-emerald-50 text-lg mb-10 max-w-2xl mx-auto font-light italic">Implementasi Real-Time Object Detection RT-DETR untuk identifikasi gejala defisiensi unsur hara makro.</p>
+            <a href="#analisis" class="bg-lime-500 text-emerald-900 px-10 py-5 rounded-2xl font-black uppercase tracking-widest hover:scale-105 transition shadow-2xl inline-block">Analisis Daun</a>
+        </div>
+    </header>
+
+    <section id="edukasi" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center mb-20">
+            <h2 class="text-4xl font-black text-emerald-900 uppercase italic mb-4">Identifikasi Gejala Visual</h2>
+            <div class="h-1.5 w-24 bg-lime-500 mx-auto rounded-full"></div>
+            <p class="mt-6 text-emerald-700 max-w-2xl mx-auto italic">Berikut adalah klasifikasi kondisi kesehatan daun berdasarkan standar agronomi perkebunan kelapa sawit.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-l-8 border-emerald-500 flex flex-col hover:shadow-xl transition duration-500">
+                <img src="images/daun-normal.jpg" class="w-full h-48 object-cover rounded-2xl mb-6 shadow-md" alt="Daun Normal">
+                <div>
+                    <h3 class="text-2xl font-black text-emerald-900 mb-4 uppercase tracking-tighter italic">1. Hijau Normal (Sehat)</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        Kondisi di mana pelepah daun memiliki intensitas warna hijau tua yang pekat dan merata pada seluruh anak daun. 
+                        Hal ini menunjukkan bahwa serapan unsur hara Nitrogen (N), Fosfor (P), dan Kalium (K) berada pada level optimal.
+                    </p>
+                    <ul class="mt-4 space-y-2 text-xs text-emerald-700 font-semibold">
+                        <li>✔ Permukaan daun mengkilap dan kaku.</li>
+                        <li>✔ Pertumbuhan vegetatif batang sangat masif.</li>
+                        <li>✔ Efisiensi fotosintesis maksimal.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-l-8 border-yellow-400 flex flex-col hover:shadow-xl transition duration-500">
+                <img src="images/daun-kekuningan.jpg" class="w-full h-48 object-cover rounded-2xl mb-6 shadow-md" alt="Daun Kekuningan">
+                <div>
+                    <h3 class="text-2xl font-black text-emerald-900 mb-4 uppercase tracking-tighter italic">2. Hijau Kekuningan</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        Merupakan gejala awal defisiensi Nitrogen. Warna hijau mulai memudar menjadi pucat. Nitrogen berperan penting dalam pembentukan klorofil; jika kurang, produksi energi tanaman akan terhambat.
+                    </p>
+                    <ul class="mt-4 space-y-2 text-xs text-yellow-700 font-semibold">
+                        <li>⚠ Seluruh helaian daun terlihat pucat/klorosis ringan.</li>
+                        <li>⚠ Pertumbuhan pelepah mulai melambat.</li>
+                        <li>⚠ Penyebab: Dosis pupuk kurang atau penguapan (volatilisasi).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-l-8 border-orange-500 flex flex-col hover:shadow-xl transition duration-500">
+                <img src="images/daun-kuning-tua.jpg" class="w-full h-48 object-cover rounded-2xl mb-6 shadow-md" alt="Daun Kuning Tua">
+                <div>
+                    <h3 class="text-2xl font-black text-emerald-900 mb-4 uppercase tracking-tighter italic">3. Kuning Pada Daun Tua</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        Gejala ini muncul pada pelepah bagian bawah (daun tua). Karena Nitrogen adalah unsur yang mobile, tanaman akan memindahkan cadangan N dari daun tua ke pucuk baru, menyebabkan daun tua menguning secara menyeluruh.
+                    </p>
+                    <ul class="mt-4 space-y-2 text-xs text-orange-700 font-semibold">
+                        <li>✖ Warna kuning terang hingga oranye pada pelepah bawah.</li>
+                        <li>✖ Daun seringkali mengering sebelum waktunya.</li>
+                        <li>✖ Berdampak langsung pada penurunan berat janjang (TBS).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-l-8 border-red-700 flex flex-col hover:shadow-xl transition duration-500">
+                <img src="images/daun-coklat-ujung.jpg" class="w-full h-48 object-cover rounded-2xl mb-6 shadow-md" alt="Daun Coklat">
+                <div>
+                    <h3 class="text-2xl font-black text-emerald-900 mb-4 uppercase tracking-tighter italic">4. Coklat Pada Ujung Daun</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        Dikenal sebagai Necrosis. Ini adalah tanda khas defisiensi Kalium (K) atau gangguan air. Ujung anak daun mulai mati (nekrosis) dan berwarna coklat tua seperti terbakar.
+                    </p>
+                    <ul class="mt-4 space-y-2 text-xs text-red-700 font-semibold">
+                        <li>✖ Bercak oranye/coklat dimulai dari pinggir anak daun.</li>
+                        <li>✖ Daun menjadi rapuh dan mudah patah.</li>
+                        <li>✖ Mengurangi ketahanan tanaman terhadap hama dan penyakit.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="analisis" class="bg-emerald-900 py-24 px-6 rounded-t-[5rem]">
+        <div class="max-w-6xl mx-auto bg-white rounded-[4rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/20">
+            <div class="p-10 md:w-1/2 border-r bg-white">
+                <h2 class="text-2xl font-black mb-8 uppercase italic text-emerald-900 tracking-tighter">1. Input Citra / Kamera</h2>
+                <div class="space-y-4">
+                    <div class="flex gap-2">
+                        <button id="start-camera" class="flex-1 bg-emerald-100 py-4 rounded-2xl font-bold uppercase text-xs tracking-widest text-emerald-900 hover:bg-emerald-200 transition">Buka Kamera</button>
+                        <button id="capture-photo" class="hidden flex-1 bg-lime-500 py-4 rounded-2xl font-bold uppercase text-xs tracking-widest text-emerald-900 shadow-lg">Ambil Foto</button>
+                    </div>
+                    <div id="drop-zone" class="relative bg-emerald-50 rounded-[2rem] aspect-video overflow-hidden group shadow-inner border-2 border-dashed border-emerald-200 transition-all">
+                        <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer z-10">
+                        <video id="video-feed" class="hidden w-full h-full object-cover"></video>
+                        <img id="preview-image" class="hidden w-full h-full object-contain">
+                        <canvas id="detection-canvas" class="absolute top-0 left-0 w-full h-full pointer-events-none"></canvas>
+                        <div id="placeholder" class="absolute inset-0 flex items-center justify-center text-emerald-800 font-bold text-[10px] uppercase opacity-40 italic pointer-events-none">Klik atau Seret Gambar Ke Sini</div>
+                    </div>
+                    <button id="analyze-btn" class="w-full bg-emerald-900 text-white font-black py-6 rounded-2xl uppercase tracking-[0.3em] shadow-2xl hover:bg-emerald-800 transition">Analisis Daun</button>
+                </div>
+            </div>
+            <div class="p-10 md:w-1/2 bg-stone-50">
+                <h2 class="text-2xl font-black mb-8 uppercase italic text-emerald-900 tracking-tighter">2. Diagnosis Otomatis</h2>
+                <div class="space-y-6">
+                    <div class="bg-white p-8 rounded-3xl border border-emerald-100 shadow-sm">
+                        <p class="text-[10px] uppercase font-black text-emerald-400 mb-2 tracking-[0.2em]">Hasil Klasifikasi</p>
+                        <div id="health-status" class="text-4xl font-black italic opacity-20 text-emerald-900 tracking-tighter">MENUNGGU...</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-6 rounded-3xl border border-emerald-100"><p class="text-[10px] font-black uppercase text-emerald-400 mb-1">Akurasi AI</p><div id="green-level" class="text-2xl font-black text-emerald-900">0%</div></div>
+                        <div class="bg-white p-6 rounded-3xl border border-emerald-100"><p class="text-[10px] font-black uppercase text-emerald-400 mb-1">Status Hara</p><div id="nitrogen-level" class="text-xs font-bold text-emerald-700 italic">-</div></div>
+                    </div>
+                    <div class="bg-emerald-950 text-lime-400 p-8 rounded-[2.5rem] shadow-xl">
+                        <h4 class="text-[10px] font-black uppercase mb-2 tracking-[0.3em]">Catatan Agronomis:</h4>
+                        <p id="analysis-detail" class="text-sm font-light leading-relaxed text-white/90 italic">Data belum tersedia. Silakan ambil foto atau unggah gambar untuk memulai analisis berbasis model RT-DETR.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-emerald-950 py-16 text-center border-t border-emerald-900">
+        <p class="text-emerald-700 text-[10px] font-black uppercase tracking-[0.5em] mb-2 italic">PalmGuard Intelligent Agriculture System &copy; 2026</p>
+        <p class="text-white/20 text-[8px] uppercase tracking-widest">Powered by NVIDIA GTX - RT-DETR Model v1.0</p>
+    </footer>
+
+    <script>
+        const fileInput = document.getElementById("file-input");
+        const previewImage = document.getElementById("preview-image");
+        const video = document.getElementById("video-feed");
+        const canvas = document.getElementById("detection-canvas");
+        const ctx = canvas.getContext("2d");
+        const startCamBtn = document.getElementById("start-camera");
+        const captureBtn = document.getElementById("capture-photo");
+        const placeholder = document.getElementById("placeholder");
+        const dropZone = document.getElementById("drop-zone");
+
+        startCamBtn.onclick = async () => {
+            if(startCamBtn.textContent === "Matikan Kamera") {
+                location.reload(); return;
+            }
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream; video.play();
+                video.classList.remove("hidden"); previewImage.classList.add("hidden");
+                placeholder.classList.add("hidden"); captureBtn.classList.remove("hidden");
+                startCamBtn.textContent = "Matikan Kamera";
+            } catch (err) { alert("Gagal akses kamera!"); }
+        };
+
+        captureBtn.onclick = () => {
+            const temp = document.createElement("canvas");
+            temp.width = video.videoWidth; temp.height = video.videoHeight;
+            temp.getContext("2d").drawImage(video, 0, 0);
+            previewImage.src = temp.toDataURL("image/jpg");
+            previewImage.classList.remove("hidden"); video.classList.add("hidden");
+            captureBtn.classList.add("hidden"); startCamBtn.textContent = "Buka Kamera";
+            video.srcObject.getTracks().forEach(t => t.stop());
+        };
+
+        fileInput.onchange = () => {
+            const file = fileInput.files[0];
+            if (file) handleFileSelection(file);
+        };
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, e => {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.add('border-lime-500', 'bg-emerald-100');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.remove('border-lime-500', 'bg-emerald-100');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', e => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleFileSelection(files[0]);
+            }
+        }, false);
+
+        function handleFileSelection(file) {
+            previewImage.src = URL.createObjectURL(file);
+            previewImage.classList.remove("hidden");
+            placeholder.classList.add("hidden");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        document.getElementById("analyze-btn").onclick = async () => {
+            if (!previewImage.src) return alert("Pilih gambar!");
+            const btn = document.getElementById("analyze-btn");
+            btn.textContent = "SEDANG MENGANALISIS..."; btn.disabled = true;
+
+            const blob = await (await fetch(previewImage.src)).blob();
+            const formData = new FormData();
+            formData.append('image', blob, 'daun.jpg');
+
+            try {
+                const resp = await fetch('http://localhost:5000/predict', { method: 'POST', body: formData });
+                const results = await resp.json();
+                canvas.width = previewImage.clientWidth; canvas.height = previewImage.clientHeight;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if (results.length > 0) {
+                    results.forEach(res => {
+                        const [x1, y1, x2, y2] = res.bbox[0];
+                        const sX = canvas.width / previewImage.naturalWidth;
+                        const sY = canvas.height / previewImage.naturalHeight;
+                        ctx.strokeStyle = "#a3e635"; ctx.lineWidth = 5;
+                        ctx.strokeRect(x1*sX, y1*sY, (x2-x1)*sX, (y2-y1)*sY);
+                        ctx.fillStyle = "#a3e635"; ctx.font = "bold 12px Arial";
+                        ctx.fillText(`${res.label} ${res.confidence}%`, x1*sX, (y1*sY)-10);
+                    });
+                    const top = results[0];
+                    document.getElementById("health-status").textContent = top.label;
+                    document.getElementById("health-status").classList.remove("opacity-20");
+                    document.getElementById("green-level").textContent = top.confidence + "%";
+                    
+                    let nSaran = (top.label === "HIJAU NORMAL") ? "DOSIS PEMELIHARAAN (OPTIMAL)" : "PERLU TAMBAHAN PUPUK (DEFISIENSI)";
+                    document.getElementById("nitrogen-level").textContent = nSaran;
+                    document.getElementById("analysis-detail").textContent = `Hasil deteksi menunjukkan area dengan label ${top.label}. Sistem menyarankan penyesuaian jadwal pemupukan sesuai parameter hara makro.`;
+                }
+            } catch (e) { alert("Server belum jalan!"); }
+            finally { btn.textContent = "Analisis Daun"; btn.disabled = false; }
+        };
+    </script>
+</body>
+</html>
