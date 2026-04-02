@@ -137,8 +137,50 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-white p-6 rounded-3xl border border-emerald-100"><p class="text-[10px] font-black uppercase text-emerald-400 mb-1">Akurasi AI</p><div id="green-level" class="text-2xl font-black text-emerald-900">0%</div></div>
-                        <div class="bg-white p-6 rounded-3xl border border-emerald-100"><p class="text-[10px] font-black uppercase text-emerald-400 mb-1">Status Hara</p><div id="nitrogen-level" class="text-xs font-bold text-emerald-700 italic">-</div></div>
+                        <div class="bg-white p-6 rounded-3xl border border-emerald-100"><p class="text-[10px] font-black uppercase text-emerald-400 mb-1">Rekomendasi Pupuk</p><div id="fertilizer-recommendation" class="text-xs font-bold text-emerald-700 italic">-</div></div>
                     </div>
+
+                    <div class="bg-white p-6 rounded-3xl border border-emerald-100 shadow-sm hidden" id="rgb-container">
+                        <p class="text-[10px] font-black uppercase text-emerald-400 mb-3 tracking-[0.2em]">Analisis Nilai RGB Area Deteksi</p>
+                        
+                        <div class="flex items-center justify-between mb-4 px-2">
+                            <span class="text-sm font-bold text-red-600">R: <span id="val-r" class="text-lg">0</span></span>
+                            <span class="text-sm font-bold text-green-600">G: <span id="val-g" class="text-lg">0</span></span>
+                            <span class="text-sm font-bold text-blue-600">B: <span id="val-b" class="text-lg">0</span></span>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-bold text-red-500 w-4">R</span>
+                                <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden shadow-inner">
+                                    <div id="bar-r" class="bg-red-500 h-3 rounded-full transition-all duration-1000 ease-out" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-bold text-green-500 w-4">G</span>
+                                <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden shadow-inner">
+                                    <div id="bar-g" class="bg-green-500 h-3 rounded-full transition-all duration-1000 ease-out" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-bold text-blue-500 w-4">B</span>
+                                <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden shadow-inner">
+                                    <div id="bar-b" class="bg-blue-500 h-3 rounded-full transition-all duration-1000 ease-out" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                            <p class="text-[10px] font-black uppercase text-emerald-600 mb-2 tracking-[0.1em]">Panduan Pola RGB (Teori):</p>
+                            <ul class="text-xs text-emerald-800 space-y-1.5 font-medium">
+                                <li><span class="font-bold text-emerald-700">Hijau Normal:</span> Nilai <span class="text-green-600">G</span> dominan tertinggi; R & B rendah.</li>
+                                <li><span class="font-bold text-yellow-600">Kekuningan:</span> Nilai <span class="text-green-600">G</span> tinggi, nilai <span class="text-red-600">R</span> mulai naik mendekati G.</li>
+                                <li><span class="font-bold text-orange-600">Kuning Tua:</span> Nilai <span class="text-red-600">R</span> dan <span class="text-green-600">G</span> seimbang & tinggi (R+G = Kuning).</li>
+                                <li><span class="font-bold text-red-700">Coklat Ujung:</span> <span class="text-red-600">R</span> > G, namun semua nilai (R,G,B) cenderung gelap.</li>
+                            </ul>
+                            <p class="text-[9px] text-emerald-600 mt-3 italic leading-tight">*Catatan: AI digunakan karena nilai RGB aktual sangat rentan terhadap perubahan cahaya lingkungan. RGB di sini berfungsi sebagai validasi sekunder.</p>
+                        </div>
+                        </div>
                     <div class="bg-emerald-950 text-lime-400 p-8 rounded-[2.5rem] shadow-xl">
                         <h4 class="text-[10px] font-black uppercase mb-2 tracking-[0.3em]">Catatan Agronomis:</h4>
                         <p id="analysis-detail" class="text-sm font-light leading-relaxed text-white/90 italic">Data belum tersedia. Silakan ambil foto atau unggah gambar untuk memulai analisis berbasis model RT-DETR.</p>
@@ -199,32 +241,13 @@
             }, false);
         });
 
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => {
-                dropZone.classList.add('border-lime-500', 'bg-emerald-100');
-            }, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => {
-                dropZone.classList.remove('border-lime-500', 'bg-emerald-100');
-            }, false);
-        });
-
-        dropZone.addEventListener('drop', e => {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            if (files.length > 0) {
-                fileInput.files = files;
-                handleFileSelection(files[0]);
-            }
-        }, false);
-
         function handleFileSelection(file) {
             previewImage.src = URL.createObjectURL(file);
             previewImage.classList.remove("hidden");
             placeholder.classList.add("hidden");
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Sembunyikan UI RGB saat gambar baru dimasukkan
+            document.getElementById("rgb-container").classList.add("hidden");
         }
 
         document.getElementById("analyze-btn").onclick = async () => {
@@ -239,29 +262,114 @@
             try {
                 const resp = await fetch('http://localhost:5000/predict', { method: 'POST', body: formData });
                 const results = await resp.json();
-                canvas.width = previewImage.clientWidth; canvas.height = previewImage.clientHeight;
+                
+                canvas.width = previewImage.clientWidth; 
+                canvas.height = previewImage.clientHeight;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+
                 if (results.length > 0) {
+                    const sX = canvas.width / previewImage.naturalWidth;
+                    const sY = canvas.height / previewImage.naturalHeight;
+                    
                     results.forEach(res => {
-                        const [x1, y1, x2, y2] = res.bbox[0];
-                        const sX = canvas.width / previewImage.naturalWidth;
-                        const sY = canvas.height / previewImage.naturalHeight;
+                        const [x1, y1, x2, y2] = res.bbox;
                         ctx.strokeStyle = "#a3e635"; ctx.lineWidth = 5;
                         ctx.strokeRect(x1*sX, y1*sY, (x2-x1)*sX, (y2-y1)*sY);
                         ctx.fillStyle = "#a3e635"; ctx.font = "bold 12px Arial";
                         ctx.fillText(`${res.label} ${res.confidence}%`, x1*sX, (y1*sY)-10);
                     });
+
                     const top = results[0];
+                    const labelDiteksi = top.label.toUpperCase();
+                    
                     document.getElementById("health-status").textContent = top.label;
                     document.getElementById("health-status").classList.remove("opacity-20");
                     document.getElementById("green-level").textContent = top.confidence + "%";
                     
-                    let nSaran = (top.label === "HIJAU NORMAL") ? "DOSIS PEMELIHARAAN (OPTIMAL)" : "PERLU TAMBAHAN PUPUK (DEFISIENSI)";
-                    document.getElementById("nitrogen-level").textContent = nSaran;
-                    document.getElementById("analysis-detail").textContent = `Hasil deteksi menunjukkan area dengan label ${top.label}. Sistem menyarankan penyesuaian jadwal pemupukan sesuai parameter hara makro.`;
+                    // --- [TAMBAHAN BARU] LOGIKA MENGHITUNG RGB DARI AREA BOUNDING BOX ---
+                    const [x1, y1, x2, y2] = top.bbox;
+                    const tempImgCanvas = document.createElement("canvas");
+                    const tempCtx = tempImgCanvas.getContext("2d");
+                    tempImgCanvas.width = previewImage.naturalWidth;
+                    tempImgCanvas.height = previewImage.naturalHeight;
+                    tempCtx.drawImage(previewImage, 0, 0);
+
+                    // Menjaga agar titik potong tidak keluar dari dimensi asli gambar
+                    const boxX = Math.max(0, x1);
+                    const boxY = Math.max(0, y1);
+                    const boxW = Math.max(1, Math.min(previewImage.naturalWidth - boxX, x2 - x1));
+                    const boxH = Math.max(1, Math.min(previewImage.naturalHeight - boxY, y2 - y1));
+
+                    const imgData = tempCtx.getImageData(boxX, boxY, boxW, boxH);
+                    const data = imgData.data;
+                    let rSum = 0, gSum = 0, bSum = 0, pixelCount = 0;
+
+                    for (let i = 0; i < data.length; i += 4) {
+                        rSum += data[i];     // Red
+                        gSum += data[i + 1]; // Green
+                        bSum += data[i + 2]; // Blue
+                        pixelCount++;
+                    }
+
+                    const avgR = Math.round(rSum / pixelCount) || 0;
+                    const avgG = Math.round(gSum / pixelCount) || 0;
+                    const avgB = Math.round(bSum / pixelCount) || 0;
+
+                    // Tampilkan kotak RGB
+                    document.getElementById("rgb-container").classList.remove("hidden");
+                    
+                    // Update Angka
+                    document.getElementById("val-r").textContent = avgR;
+                    document.getElementById("val-g").textContent = avgG;
+                    document.getElementById("val-b").textContent = avgB;
+
+                    // Animasi Grafik Bar (Persentase dari max 255)
+                    setTimeout(() => {
+                        document.getElementById("bar-r").style.width = (avgR / 255 * 100) + "%";
+                        document.getElementById("bar-g").style.width = (avgG / 255 * 100) + "%";
+                        document.getElementById("bar-b").style.width = (avgB / 255 * 100) + "%";
+                    }, 100);
+                    // --- [AKHIR TAMBAHAN BARU] ---
+
+
+                    // --- PERBAIKAN LOGIKA REKOMENDASI PUPUK SESUAI TABEL ---
+                    let rekomendasiPupuk = "";
+                    let catatanAgronomis = "";
+
+                    if (labelDiteksi.includes("NORMAL")) {
+                        rekomendasiPupuk = "Pemupukan rutin (NPK)";
+                        catatanAgronomis = "Tanaman dalam kondisi sehat. Lanjutkan jadwal pemupukan rutin.";
+                    } 
+                    else if (labelDiteksi.includes("KEKUNINGAN")) {
+                        rekomendasiPupuk = "Urea";
+                        catatanAgronomis = "Terdeteksi defisiensi Nitrogen (N). Disarankan pemberian pupuk Urea.";
+                    } 
+                    else if (labelDiteksi.includes("KUNING") && labelDiteksi.includes("TUA")) {
+                        rekomendasiPupuk = "Kieserite";
+                        catatanAgronomis = "Terdeteksi defisiensi Magnesium (Mg) pada pelepah tua. Disarankan pemberian pupuk Kieserite.";
+                    } 
+                    else if (labelDiteksi.includes("COKLAT")) {
+                        rekomendasiPupuk = "KCl";
+                        catatanAgronomis = "Terdeteksi defisiensi Kalium (K). Disarankan pemberian pupuk KCl untuk mengatasi nekrosis.";
+                    } 
+                    else {
+                        rekomendasiPupuk = "Cek Laboratorium";
+                        catatanAgronomis = "Gejala tidak spesifik. Disarankan melakukan analisis jaringan daun lebih lanjut.";
+                    }
+
+                    const elementPupuk = document.getElementById("fertilizer-recommendation") || document.getElementById("nitrogen-level");
+                    if(elementPupuk) elementPupuk.textContent = rekomendasiPupuk;
+                    
+                    document.getElementById("analysis-detail").textContent = catatanAgronomis;
+
+                } else {
+                    alert("Model tidak mendeteksi gejala apapun.");
                 }
-            } catch (e) { alert("Server belum jalan!"); }
-            finally { btn.textContent = "Analisis Daun"; btn.disabled = false; }
+            } catch (e) { 
+                alert("Gagal konek ke server! Pastikan app.py sudah jalan."); 
+            } finally { 
+                btn.textContent = "Analisis Daun"; btn.disabled = false; 
+            }
         };
     </script>
 </body>

@@ -8,31 +8,44 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# Path hasil training yang akan dibuat oleh train_rtdetr.py
+# Path model hasil training PalmGuard AI
 model_path = 'Sawit_Project/rtdetr_l_sawit/weights/best.pt'
 
 if os.path.exists(model_path):
+    print(f"Memuat model sukses: {model_path}")
     model = RTDETR(model_path)
 else:
-    # Pakai model default jika belum selesai training
+    print("Model training tidak ditemukan, menggunakan model default.")
     model = RTDETR("rtdetr-l.pt")
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    if 'image' not in request.files:
+        return jsonify({"error": "No image uploaded"}), 400
+        
     file = request.files['image']
     img_bytes = np.frombuffer(file.read(), np.uint8)
     img = cv2.imdecode(img_bytes, cv2.IMREAD_COLOR)
 
+    # Prediksi menggunakan RT-DETR
     results = model(img)
+    
     detections = []
     for r in results:
-        for box in r.boxes:
+        # Ambil koordinat pixel asli (xyxy)
+        boxes = r.boxes.xyxy.cpu().numpy()
+        confs = r.boxes.conf.cpu().numpy()
+        clss = r.boxes.cls.cpu().numpy()
+        
+        for box, conf, cls in zip(boxes, confs, clss):
             detections.append({
-                "label": model.names[int(box.cls)],
-                "confidence": round(float(box.conf) * 100, 1),
-                "bbox": box.xyxy.tolist() # Koordinat untuk Canvas
+                "label": model.names[int(cls)],
+                "confidence": round(float(conf) * 100, 1),
+                "bbox": box.tolist()  # Mengirim [x1, y1, x2, y2]
             })
+            
     return jsonify(detections)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    # Aspire 7 lu bakal jalan di port 5000
+    app.run(host='0.0.0.0', port=5000, debug=False)
